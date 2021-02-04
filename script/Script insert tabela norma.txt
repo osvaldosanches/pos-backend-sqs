@@ -1,2 +1,0 @@
-INSERT INTO `gn`.`norma` (`nome`, `descricao`, `codigo`, `inicioVigencia`, `fimVigencia`) 
-VALUES ('Norma ambiental de PLA 007', 'Material PLA para fabricação de etiqueta plástica ou lacre de produto', '001', '01012021', '31122021');

@@ -11,13 +11,6 @@ const db = mysql.createPool({
     port: "3306",    
     password: "password",
     database: "gn",
-    //host: "sql10.freemysqlhosting.net",
-    //user: "sql10390375",
-    //port: "3306",
-    //password: "bNwmyj2pqM",
-    //database: "sql10390375",
-    //acquireTimeout: 1000000,
-    //queryTimeout: 1000000,
 
 });
 
@@ -54,15 +47,17 @@ app.post("/api/insert",(req,res)=>{
 
     const nome = req.body.nome
     const descricao = req.body.descricao
+    const sqs = 'https://sqs.sa-east-1.amazonaws.com/687255601585/AvancarEtapaProcesso?Action=SendMessage&MessageBody=';
+    const url = sqs+'{"nomeRelatorio":"'+ nome+'","observacao":"'+descricao+'"}';
+
+    console.log(url)
 
     axios
-    //.post('http://hml.portalgeprosro.brasilseg.com.br/api/cargas/cargarInserir/risco_emissao', {
-    .get('https://sqs.sa-east-1.amazonaws.com/687255601585/AvancarEtapaProcesso?Action=SendMessage&MessageBody=NOVO2 - 04 de fevereiro 2021', {
-        //todo: 'Buy the milk'
+    .get(url, {
     })
     .then(res => {
         console.log(`statusCode: ${res.statusCode}`)
-        //console.log(res)
+        //alert('Solicitação de relatório enviada.');
     })
     .catch(error => {
         console.error(error)
