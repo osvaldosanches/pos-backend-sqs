@@ -1,0 +1,9 @@
+CREATE TABLE `gn`.`norma` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(40) NULL,
+  `descricao` VARCHAR(200) NULL,
+  `codigo` INT NULL,
+  `inicioVigencia` VARCHAR(8) NULL,
+  `fimVigencia` VARCHAR(8) NULL,
+  PRIMARY KEY (`id`))
+COMMENT = 'tabela para armazenamento de normas';
