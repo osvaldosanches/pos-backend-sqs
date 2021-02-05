@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const mysql = require("mysql");
 const axios = require('axios');
+const journal = [];
 
 const db = mysql.createPool({
     host: "localhost",
@@ -16,25 +17,94 @@ const db = mysql.createPool({
 
 app.get("/api/get",(req,res)=>{
 
-    //const sqlSelect = "SELECT * FROM `sql10390375`.`norma`;";
-    const sqlSelect = "SELECT * FROM norma;";
+    axios
+    .get('https://sqs.sa-east-1.amazonaws.com/687255601585/AvancarEtapaProcesso?Action=ReceiveMessage', {
+    })
+    .then(res => {
 
-    db.query(sqlSelect,(err,result)=>{
+        console.log(`statusCode: ${res.status}`)
+        //console.log(res.data.ReceiveMessageResponse.ReceiveMessageResult.messages)
+        //const json = messages;
+        //const obj = JSON.parse(json);
+        
+        // console.log(obj.body);
 
-        console.log("teste >>>>>>>>>>>>>>> osvaldo");   
-        console.log(result); 
-        console.log(sqlSelect);
-        console.log(err);
-        //console.log(err.code);
+        //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>osvaldo")
+        //console.log(res.data)
 
-        //linhas para resolver o erro do console - o cabeçalho CORS 'Access-Control-Allow-Origin' não está presente
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.send(result);
-        //res.send('hello Osvaldo teste2 ');
-    }); 
+        //res.data.ReceiveMessageResponse.ReceiveMessageResult.messages[0].Body;
+        const messages = res.data.ReceiveMessageResponse.ReceiveMessageResult.messages;
+        //console.log(messages);
+        //console.log(messages[0].Body);
+        //console.log(res.data.ReceiveMessageResponse.ReceiveMessageResult.messages[0].Body);
+
+
+        for (var i = 0; i < messages.length; i++) {
+            console.log("for posicao "+i+": "+messages[i].Body);
+            journal.push({nome: "osvaldo", descricao: "sanches2"});
+
+        }
+        //journal.push({nome: "osvaldo", descricao: "sanches2"});
+
+        //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+       // for (var i = 0; i < journal.length; i++) {
+         //   console.log(journal[i]);
+      //  }
+
+        //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>osvaldo2")
+        //const obj = JSON.parse(res.data);
+        //console.log(obj);
+
+        //var obj = JSON.stringify(messages);
+        //console.log(obj);
+
+        //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>osvaldo3")
+        //console.log(res.toString());
+        //res.send(journal);
+
+     })
+    .catch(error => {
+      console.error(error)
+    })
+
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //res.send(res.toString()); //funciona
+    //res.send(res.data); //funciona
+    //res.send(res); //nao 
+    //res.send(res.data.ReceiveMessageResponse.ReceiveMessageResult.messages[0].Body); nao
+
+
+   //const retorno = [
+   // {nome: "osvaldo", descricao: "sanches"},
+   // {nome: "haydee", descricao: "hirai"},
+  //];
+
+       //const messages2 = res.data.ReceiveMessageResponse.ReceiveMessageResult.messages;
+  //console.log(messages);
+  //console.log(messages[0].Body);
+       //console.log(res.data.ReceiveMessageResponse.ReceiveMessageResult.messages[0].Body);
+
+
+        //for (var i = 0; i < messages2.length; i++) {
+           // console.log("posicao nova "+i+": "+messages2[i].Body);
+        // journal.push({nome: "osvaldo", descricao: "sanches2"});
+
+       // }
+
+    //journal.push({nome: "osvaldo", descricao: "sanches2"});
+    //console.log("final tamanho: "+journal.length);
+    //for (var i = 0; i < journal.length; i++) {
+     //   console.log("final for valor "+journal[i]);
+     //}
+
+   res.send(journal);
+
 
 });
+
+
 
 app.use(cors());
 
@@ -56,7 +126,7 @@ app.post("/api/insert",(req,res)=>{
     .get(url, {
     })
     .then(res => {
-        console.log(`statusCode: ${res.statusCode}`)
+        console.log(`statusCode: ${res.status}`)
         //alert('Solicitação de relatório enviada.');
     })
     .catch(error => {
