@@ -1,3 +1,7 @@
+//Osvaldo Sanches
+//Projeto - POC PUC Minas
+//2020-2021
+
 const express = require("express");
 const bodyParse = require("body-parser");
 const cors = require("cors");
@@ -5,15 +9,7 @@ const app = express();
 const mysql = require("mysql");
 const axios = require('axios');
 
-const db = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    port: "3306",    
-    password: "password",
-    database: "gn",
-
-});
-
+//chamada de busca na fila - pela documentação pode vir uma ou mais msgs
 app.get("/api/get",(req,res)=>{
 
     const resposta = [];
@@ -28,7 +24,6 @@ app.get("/api/get",(req,res)=>{
         const messages = result.data.ReceiveMessageResponse.ReceiveMessageResult.messages;
         //console.log(messages[0].Body);
         //console.log(res.data.ReceiveMessageResponse.ReceiveMessageResult.messages[0].Body);
-        //console.log(messages[0]);
 
         for (var i = 0; i < messages.length; i++) {
             console.log("for posicao "+i+": "+messages[i].Body);
@@ -38,16 +33,6 @@ app.get("/api/get",(req,res)=>{
 
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        //res.send(res.toString()); //funciona
-        //res.send(res.data); //funciona
-        //res.send(res); //nao 
-        //res.send(res.data.ReceiveMessageResponse.ReceiveMessageResult.messages[0].Body); nao
-    
-        //const retorno = [
-        // {nome: "x", descricao: "y"},
-        // {nome: "x", descricao: "y"},
-        //];
-        //console.log(resposta);
         res.send(resposta);
 
      })
@@ -63,8 +48,8 @@ app.use(express.json());
 
 app.use(bodyParse.urlencoded({extended:true}));
 
+//chamada de insert na fina
 app.post("/api/insert",(req,res)=>{
-//app.post('/api/insert',(req,res)=>{   
 
     const nome = req.body.nome
     const descricao = req.body.descricao
